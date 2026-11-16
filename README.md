@@ -6,11 +6,11 @@
 </p>
 
 <p align="center">
-  **Kelompok 1 — Sains Data ITSB**
+  <strong>Kelompok 1 — Sains Data ITSB</strong>
 </p>
 
 <p align="center">
-  *Membantu menemukan kembali, menghubungkan pemilik dengan barang yang hilang.*
+  <em>Membantu menemukan kembali, menghubungkan pemilik dengan barang yang hilang.</em>
 </p>
 
 ---
