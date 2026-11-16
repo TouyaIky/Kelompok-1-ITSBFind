@@ -1,0 +1,9 @@
+{% extends "app_base.html" if g.user else "public_base.html" %}
+{% block title %}About Us — ITSB FIND{% endblock %}
+{% block inner %}
+{% include 'partials/guest_banner.html' %}
+<div class="page-head"><div><h1>THE MINDS BEHIND ITSB FIND</h1><p>Five minds, one mission — building a smarter way to reconnect people with their lost belongings.</p></div></div>
+<div class="card" style="margin-bottom:1.6rem"><h3 style="margin-bottom:.6rem">Tentang ITSB FIND</h3>
+  <p>ITSB FIND adalah platform digital Lost and Found untuk membantu mahasiswa dan seluruh civitas akademika {{ project.institution }} melaporkan, mencari, dan menemukan kembali barang yang hilang di lingkungan kampus. Penentuan kepemilikan selalu dilakukan langsung oleh Satpam.</p></div>
+{% include 'partials/team.html' %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "app_base.html" if g.user else "public_base.html" %}
+{% block title %}Kritik dan Saran — ITSB FIND{% endblock %}
+{% block inner %}
+<div style="max-width:760px;{{ 'margin-inline:auto' if not g.user }}">
+  <div class="page-head"><div><h1>Kritik dan Saran</h1><p>Bantu kami meningkatkan ITSB FIND.{% if not g.user %} Tidak perlu login.{% endif %}</p></div></div>
+  {% include 'partials/feedback_form.html' %}
+</div>
+{% endblock %}
+{% block js %}<script src="{{ url_for('static', filename='js/forms.js') }}"></script>{% endblock %}

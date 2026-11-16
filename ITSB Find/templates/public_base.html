@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% block css2 %}{% endblock %}{% endblock %}
+{% block body %}
+{% include 'partials/navbar.html' %}
+<main id="main">{% block content %}<div class="container guest-wrap">{% block inner %}{% endblock %}</div>{% endblock %}</main>
+{% include 'partials/footer.html' %}
+{% include 'partials/login_modal.html' %}
+{% endblock %}

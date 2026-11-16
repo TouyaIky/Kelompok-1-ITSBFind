@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% macro nav(endpoint, icon, label, match=None) -%}
+  <a href="{{ url_for(endpoint) }}" class="{{ 'active' if request.endpoint == endpoint or (match and request.endpoint in match) }}"><i data-lucide="{{ icon }}" class="i"></i>{{ label }}</a>
+{%- endmacro %}
+{% block body %}
+<div class="shell">
+  <aside class="side" id="side">
+    {% include 'partials/logo.html' %}
+    <nav aria-label="Menu utama">
+    {% if g.user.role == 'security' %}
+      <span class="nav-label">Satpam</span>
+      {{ nav('satpam.dashboard','layout-dashboard','Dashboard') }}
+      {{ nav('satpam.found','package-check','Barang Temuan') }}
+      {{ nav('satpam.lost','search-x','Barang Hilang') }}
+      {{ nav('satpam.returns','hand-helping','Pengembalian Barang', ['satpam.return_item']) }}
+      {{ nav('satpam.history','history','Riwayat Pengembalian') }}
+      {{ nav('satpam.feedback','message-square-text','Kritik dan Saran') }}
+      {{ nav('user.profile','user-round','Profil') }}
+    {% else %}
+      {{ nav('user.dashboard','layout-dashboard','Dashboard') }}
+      {{ nav('user.found_items','package-search','Daftar Barang Temuan') }}
+      {{ nav('user.lost_items','search','Daftar Barang Hilang') }}
+      {{ nav('user.report_found','package-plus','Laporkan Barang Temuan') }}
+      {{ nav('user.report_lost','search-x','Laporkan Barang Hilang') }}
+      {{ nav('user.my_reports','clipboard-list','Laporan Saya', ['user.lost_detail']) }}
+      {{ nav('feedback.page','message-square-text','Kritik dan Saran') }}
+      {{ nav('main.about','users','About Us') }}
+      {{ nav('user.profile','user-round','Profil') }}
+    {% endif %}
+    </nav>
+    <div class="me"><span class="avatar">{{ g.user.name|initials }}</span><div><strong>{{ g.user.name }}</strong><small>{{ g.user.role|role_label }}{% if g.user.role=='student' and g.user.nim %} · {{ g.user.nim }}{% endif %}</small></div></div>
+    <form method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <button class="btn btn-ghost btn-block" type="submit"><i data-lucide="log-out" class="i"></i>Logout</button></form>
+  </aside>
+  <div class="scrim"></div>
+  <div class="main">
+    <div class="topbar">{% include 'partials/logo.html' %}<button class="burger" id="sideToggle" aria-label="Menu" style="display:grid"><i data-lucide="menu" class="i"></i></button></div>
+    <div class="content">{% block content %}{% block inner %}{% endblock %}{% endblock %}</div>
+  </div>
+</div>
+{% endblock %}

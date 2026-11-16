@@ -1,0 +1,9 @@
+{% extends "app_base.html" %}
+{% block title %}Kritik dan Saran Masuk — Satpam{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Kritik dan Saran Masuk</h1><p>Masukan yang dikirim pengguna dan pengunjung.</p></div></div>
+{% if rows %}<div class="table-wrap"><table><thead><tr><th>Pengirim</th><th>Kategori</th><th>Subjek & pesan</th><th>Waktu</th><th>Email</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{ r.sender_name }}<br><small style="color:var(--dim)">{{ r.sender_email }}</small></td><td>{{ r.category }}</td><td><b>{{ r.subject }}</b><div class="msg">{{ r.message }}</div></td><td>{{ r.created_at|idt }}</td>
+  <td>{% if r.email_status=='sent' %}<span class="badge b-stored">Terkirim</span>{% elif r.email_status=='failed' %}<span class="badge b-lost">Gagal</span>{% else %}<span class="badge b-pending">{{ 'Belum terkirim' if r.email_status=='not_configured' else 'Tertunda' }}</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="message-square-text" class="i"></i><h3>Belum ada masukan</h3><p>Kritik dan saran akan tampil di sini.</p></div>{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "app_base.html" %}
+{% block title %}Barang Hilang — Satpam{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Barang Hilang</h1><p>Laporan kehilangan lengkap dengan kontak pelapor, sebagai referensi saat pemilik datang.</p></div></div>
+{% if items %}<div class="table-wrap"><table><thead><tr><th>Barang</th><th>Pelapor & telepon</th><th>Lokasi & waktu</th><th>Status</th><th></th></tr></thead><tbody>
+{% for l in items %}<tr><td><div class="cell-item">{% if l.photo %}<img class="thumb" src="{{ url_for('static', filename='uploads/' ~ l.photo) }}" alt="">{% endif %}<div><b>{{ l.item_name }}</b><small>{{ l.category }}</small></div></div><small style="color:var(--dim);display:block;max-width:320px;margin-top:.3rem">{{ l.description }}</small></td>
+  <td>{{ l.reporter }} <small style="color:var(--dim)">({{ l.reporter_role|role_label }}{% if l.nim and l.reporter_role=='student' %} · {{ l.nim }}{% endif %})</small><br><a href="tel:{{ l.reporter_phone }}">{{ l.reporter_phone or '-' }}</a></td>
+  <td>{{ l.location }}<br><small style="color:var(--dim)">{{ l.date_lost|idate }}, {{ l.time_lost }}</small></td>
+  <td><span class="badge {{ l.status|status_cls }}">{{ l.status|status_label }}</span>{% if l.candidates %}<br><span class="badge b-mid" style="margin-top:.3rem">{{ l.candidates }} kandidat</span>{% endif %}</td>
+  <td>{% if l.status=='open' %}<form method="post" action="{{ url_for('satpam.lost_resolve', lid=l.id) }}" data-confirm="Tandai laporan ini selesai?"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="btn btn-sm btn-ghost" type="submit">Tandai selesai</button></form>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="search-x" class="i"></i><h3>Belum ada laporan kehilangan</h3><p>Laporan dari pengguna akan tampil di sini.</p></div>{% endif %}
+{% endblock %}

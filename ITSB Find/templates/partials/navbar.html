@@ -1,0 +1,35 @@
+{% set L = url_for('main.landing') %}
+{% set guest_nav = (not g.user) and request.endpoint != 'main.landing' %}
+{% macro gl(ep, label) -%}<li><a href="{{ url_for(ep) }}" class="{{ 'active' if request.endpoint == ep }}">{{ label }}</a></li>{%- endmacro %}
+<header class="nav">
+  <div class="container nav-in">
+    {% include 'partials/logo.html' %}
+    <button class="burger" aria-label="Buka menu" aria-expanded="false"><i data-lucide="menu" class="i"></i></button>
+    <div class="nav-menu">
+      <ul class="nav-links">
+      {% if guest_nav %}
+        <li><a href="{{ L }}#home">Home</a></li>
+        {{ gl('user.found_items','Daftar Barang Temuan') }}
+        {{ gl('user.lost_items','Daftar Barang Hilang') }}
+        {{ gl('main.about','About Us') }}
+        {{ gl('feedback.page','Kritik dan Saran') }}
+      {% else %}
+        <li><a href="{{ L }}#home" data-section="home">Home</a></li>
+        <li><a href="{{ L }}#about" data-section="about team">About Us</a></li>
+        <li><a href="{{ L }}#how" data-section="how">How It Works</a></li>
+        <li><a href="{{ L }}#features" data-section="features">Features</a></li>
+        <li><a href="{{ L }}#feedback" data-section="feedback">Kritik dan Saran</a></li>
+      {% endif %}
+      </ul>
+      <div class="nav-cta">
+        {% if g.user %}
+          <a class="btn btn-primary btn-sm" href="{{ url_for('satpam.dashboard' if g.user.role=='security' else 'user.dashboard') }}"><i data-lucide="layout-dashboard" class="i"></i>Dashboard</a>
+        {% else %}
+          {% if guest_nav or session.get('guest') %}<span class="pill"><i data-lucide="eye" class="i"></i>Mode Tamu</span>{% endif %}
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('auth.login') }}">Login</a>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('auth.register') }}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>

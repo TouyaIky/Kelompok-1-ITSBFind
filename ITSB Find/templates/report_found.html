@@ -1,0 +1,9 @@
+{% extends "app_base.html" %}
+{% block title %}Laporkan Barang Temuan — ITSB FIND{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Laporkan Barang Temuan</h1><p>Isi data barang yang kamu temukan di lingkungan kampus.</p></div></div>
+<div class="notice" style="max-width:760px;margin-bottom:1.2rem"><i data-lucide="info" class="i"></i><span>Setelah mengirim laporan, <b>serahkan barang secara fisik ke Satpam</b>. Barang tampil di daftar setelah penerimaan dikonfirmasi petugas.</span></div>
+{% with loc_label='Lokasi ditemukan', date_label='Tanggal ditemukan', time_label='Waktu ditemukan', photo_required=True, submit='Kirim laporan temuan' %}
+{% include 'partials/report_form.html' %}
+{% endwith %}
+{% endblock %}

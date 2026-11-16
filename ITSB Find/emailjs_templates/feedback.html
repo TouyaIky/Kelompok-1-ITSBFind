@@ -1,0 +1,16 @@
+<!-- Tempel di EmailJS > Email Templates > (template feedback) > Content > mode Code (</>) -->
+<!-- Variabel: {{sender_name}} {{sender_email}} {{category}} {{subject}} {{message}} {{sent_at}} {{app_name}}.
+     Tab Settings: To Email = email pengelola (ketik langsung di dashboard), Reply To = {{reply_to}}, Subject = [{{app_name}}] {{category}}: {{subject}} -->
+<div style="background:#f4f5f8;padding:28px 12px;font-family:Segoe UI,Arial,sans-serif">
+  <table role="presentation" width="100%" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e3e5ec">
+    <tr><td style="background:#0c0e14;padding:20px 28px;color:#fff;font-size:18px;font-weight:800">ITSB <span style="color:#ff4d5a">FIND</span> · Kritik dan Saran Baru</td></tr>
+    <tr><td style="padding:24px 28px;color:#20232e;font-size:15px;line-height:1.6">
+      <table role="presentation" width="100%" style="font-size:14px">
+        <tr><td style="color:#7b8196;width:110px;padding:4px 0">Nama</td><td><b>{{sender_name}}</b></td></tr>
+        <tr><td style="color:#7b8196;padding:4px 0">Email</td><td>{{sender_email}}</td></tr>
+        <tr><td style="color:#7b8196;padding:4px 0">Kategori</td><td>{{category}}</td></tr>
+        <tr><td style="color:#7b8196;padding:4px 0">Subjek</td><td>{{subject}}</td></tr>
+        <tr><td style="color:#7b8196;padding:4px 0">Waktu</td><td>{{sent_at}}</td></tr></table>
+      <div style="margin-top:18px;padding:16px;background:#f7f8fb;border-left:3px solid #e0202f;border-radius:6px;white-space:pre-wrap">{{message}}</div></td></tr>
+    <tr><td style="padding:14px 28px;background:#f7f8fb;color:#8a90a3;font-size:12px">Dikirim melalui {{app_name}}. Balas email ini untuk menghubungi pengirim.</td></tr>
+  </table></div>

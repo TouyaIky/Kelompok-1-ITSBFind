@@ -1,0 +1,21 @@
+{% extends "app_base.html" %}
+{% block title %}Laporan Saya — ITSB FIND{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Laporan Saya</h1><p>Pantau status laporan barang temuan dan barang hilangmu.</p></div></div>
+<h2 class="section-title" style="margin-top:0">Barang hilang</h2>
+{% if lost %}<div class="table-wrap"><table><thead><tr><th>Barang</th><th>Lokasi</th><th>Tanggal</th><th>Status</th><th></th></tr></thead><tbody>
+{% for l in lost %}<tr><td><div class="cell-item">{% if l.photo %}<img class="thumb" src="{{ url_for('static', filename='uploads/' ~ l.photo) }}" alt="">{% endif %}<div><b>{{ l.item_name }}</b><small>{{ l.category }}</small></div></div></td>
+  <td>{{ l.location }}</td><td>{{ l.date_lost|idate }}</td><td><span class="badge {{ l.status|status_cls }}">{{ l.status|status_label }}</span></td>
+  <td><div class="actions">{% if l.status=='open' %}<a class="btn btn-sm" href="{{ url_for('user.lost_detail', lid=l.id) }}"><i data-lucide="sparkles" class="i"></i>Cek kecocokan</a>
+    <form method="post" action="{{ url_for('user.lost_resolve', lid=l.id) }}" data-confirm="Tandai laporan ini sudah ditemukan?"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="btn btn-sm btn-ghost" type="submit">Sudah ketemu</button></form>{% endif %}</div></td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="search-x" class="i"></i><h3>Belum ada laporan kehilangan</h3><p>Kehilangan sesuatu? Buat laporan agar bisa dicocokkan dengan barang temuan.</p><a class="btn btn-primary" href="{{ url_for('user.report_lost') }}">Laporkan barang hilang</a></div>{% endif %}
+
+<h2 class="section-title">Barang temuan yang saya laporkan</h2>
+{% if found %}<div class="table-wrap"><table><thead><tr><th>Barang</th><th>Lokasi</th><th>Tanggal</th><th>Status</th></tr></thead><tbody>
+{% for f in found %}<tr><td><div class="cell-item"><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ f.photo) }}" alt=""><div><b>{{ f.item_name }}</b><small>{{ f.category }}</small></div></div></td>
+  <td>{{ f.location }}</td><td>{{ f.date_found|idate }}</td>
+  <td><span class="badge {{ f.status|status_cls }}">{{ f.status|status_label }}</span>{% if f.status=='pending' %}<br><small style="color:var(--dim)">Serahkan barang ke Satpam</small>{% endif %}</td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="package-plus" class="i"></i><h3>Belum ada laporan temuan</h3><p>Menemukan barang milik orang lain? Laporkan lalu serahkan ke Satpam.</p><a class="btn btn-primary" href="{{ url_for('user.report_found') }}">Laporkan barang temuan</a></div>{% endif %}
+{% endblock %}

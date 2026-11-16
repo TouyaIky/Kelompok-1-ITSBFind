@@ -1,0 +1,10 @@
+{% if not g.user %}
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle"><div class="modal-box" style="text-align:center;max-width:440px">
+  <button class="modal-x" data-modal-close aria-label="Tutup"><i data-lucide="x" class="i"></i></button>
+  <span class="avatar" style="width:64px;height:64px;margin:0 auto 1rem"><i data-lucide="lock-keyhole" class="i" style="width:28px;height:28px"></i></span>
+  <h3 id="loginModalTitle" style="margin-bottom:.5rem">Login diperlukan</h3>
+  <p style="margin-bottom:1.4rem">Fitur ini hanya untuk pengguna terdaftar. Masuk atau buat akun untuk melaporkan barang.</p>
+  <div style="display:grid;gap:.6rem"><a class="btn btn-primary" href="{{ url_for('auth.login') }}"><i data-lucide="log-in" class="i"></i>Login</a>
+  <a class="btn" href="{{ url_for('auth.register') }}"><i data-lucide="user-plus" class="i"></i>Register</a></div>
+</div></div>
+{% endif %}

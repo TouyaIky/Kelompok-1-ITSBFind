@@ -1,0 +1,17 @@
+{% extends "app_base.html" %}
+{% block title %}Barang Temuan — Satpam{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Barang Temuan</h1><p>Konfirmasi penerimaan barang dari penemu.</p></div></div>
+<div class="tabs">{% for label, val in [('Semua',''),('Menunggu Penyerahan','pending'),('Belum Dikembalikan','stored'),('Sudah Dikembalikan','returned')] %}
+  <a class="{{ 'on' if status==val }}" href="{{ url_for('satpam.found', status=val) if val else url_for('satpam.found') }}">{{ label }}</a>{% endfor %}</div>
+{% if items %}<div class="table-wrap"><table><thead><tr><th>ID</th><th>Barang</th><th>Penemu & telepon</th><th>Lokasi & waktu</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+{% for f in items %}<tr><td>#{{ f.id }}</td><td><div class="cell-item"><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ f.photo) }}" alt=""><div><b>{{ f.item_name }}</b><small>{{ f.category }}</small></div></div><small style="color:var(--dim);display:block;max-width:320px;margin-top:.3rem">{{ f.description }}</small></td>
+  <td>{{ f.reporter }} <small style="color:var(--dim)">({{ f.reporter_role|role_label }})</small><br><a href="tel:{{ f.reporter_phone }}">{{ f.reporter_phone or '-' }}</a></td>
+  <td>{{ f.location }}<br><small style="color:var(--dim)">{{ f.date_found|idate }}, {{ f.time_found }}</small></td>
+  <td><span class="badge {{ f.status|status_cls }}">{{ f.status|status_label }}</span></td>
+  <td><div class="actions">
+    {% if f.status=='pending' %}<form method="post" action="{{ url_for('satpam.confirm', fid=f.id) }}" data-confirm="Konfirmasi barang ini sudah diterima secara fisik?"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="btn btn-primary btn-sm" type="submit">Konfirmasi penerimaan</button></form>
+    {% elif f.status=='stored' %}<a class="btn btn-sm" href="{{ url_for('satpam.return_item', fid=f.id) }}"><i data-lucide="hand-helping" class="i"></i>Proses pengembalian</a>
+    {% else %}<span class="chip">Selesai</span>{% endif %}</div></td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="package-open" class="i"></i><h3>Tidak ada data</h3><p>Belum ada barang pada status ini.</p></div>{% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "app_base.html" %}
+{% block title %}Laporkan Barang Hilang — ITSB FIND{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Laporkan Barang Hilang</h1><p>Sudah cek <a href="{{ url_for('user.found_items') }}" style="color:var(--red-2);font-weight:600">daftar barang temuan</a> tetapi belum ada? Buat laporan di sini.</p></div></div>
+{% with loc_label='Perkiraan lokasi hilang', date_label='Tanggal kehilangan', time_label='Perkiraan waktu', photo_required=False, submit='Simpan laporan kehilangan' %}
+{% include 'partials/report_form.html' %}
+{% endwith %}
+{% endblock %}

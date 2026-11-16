@@ -1,0 +1,13 @@
+{% extends "app_base.html" %}
+{% block title %}Riwayat Pengembalian — Satpam{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Riwayat Pengembalian</h1><p>Seluruh barang yang telah diserahkan kepada pemiliknya, lengkap dengan dokumentasi.</p></div></div>
+{% if rows %}<div class="table-wrap"><table><thead><tr><th>Barang</th><th>Pemilik</th><th>Verifikasi</th><th>Satpam</th><th>Waktu</th><th>Dokumentasi</th></tr></thead><tbody>
+{% for r in rows %}<tr><td><div class="cell-item"><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ r.photo) }}" alt=""><div><b>#{{ r.found_item_id }} {{ r.item_name }}</b><small>{{ r.category }}</small></div></div></td>
+  <td>{{ r.owner_name }}{% if r.owner_type %} <small style="color:var(--dim)">({{ r.owner_type|role_label }})</small>{% endif %}<br><small style="color:var(--dim)">{{ r.owner_phone or r.owner_identity or '-' }}</small></td>
+  <td style="max-width:280px">{{ r.verification_notes }}</td><td>{{ r.officer }}</td><td>{{ r.return_date|idt }}</td>
+  <td>{% if r.documentation_photo %}<button class="zoom" type="button" data-zoom="{{ url_for('satpam.return_photo', rid=r.id) }}" aria-label="Lihat foto dokumentasi"><img class="thumb" src="{{ url_for('satpam.return_photo', rid=r.id) }}" alt="Dokumentasi serah terima" loading="lazy"></button>{% else %}<small style="color:var(--dim)">Tidak ada</small>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="history" class="i"></i><h3>Belum ada pengembalian</h3><p>Riwayat akan muncul setelah barang pertama dikembalikan.</p></div>{% endif %}
+<div class="modal" id="zoomModal" role="dialog" aria-modal="true" aria-label="Foto dokumentasi"><div class="modal-box" style="width:min(760px,100%)">
+  <button class="modal-x" data-modal-close aria-label="Tutup"><i data-lucide="x" class="i"></i></button><img id="zoomImg" src="" alt="Dokumentasi serah terima" style="width:100%;border-radius:14px"></div></div>
+{% endblock %}

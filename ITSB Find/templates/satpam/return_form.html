@@ -1,0 +1,34 @@
+{% extends "app_base.html" %}
+{% block title %}Proses Pengembalian #{{ item.id }} — Satpam{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Proses Pengembalian</h1><p>Barang #{{ item.id }} · {{ item.item_name }}</p></div><a class="btn btn-ghost btn-sm" href="{{ url_for('satpam.returns') }}"><i data-lucide="arrow-left" class="i"></i>Kembali</a></div>
+<div class="ret-grid">
+  <div class="card">
+    <div class="detail-photo"><img src="{{ url_for('static', filename='uploads/' ~ item.photo) }}" alt="Foto {{ item.item_name }}"></div>
+    <h3 style="margin-bottom:.4rem">{{ item.item_name }}</h3><span class="badge {{ item.status|status_cls }}">{{ item.status|status_label }}</span>
+    <div class="detail-list"><div><b>Kategori</b><span>{{ item.category }}</span></div><div><b>Deskripsi</b><span>{{ item.description }}</span></div>
+      <div><b>Lokasi</b><span>{{ item.location }}</span></div><div><b>Ditemukan</b><span>{{ item.date_found|idate }}, {{ item.time_found }}</span></div>
+      <div><b>Penemu</b><span>{{ item.reporter }} · {{ item.reporter_phone or '-' }}</span></div></div>
+    <div class="notice red"><i data-lucide="shield-check" class="i"></i><span>Cocokkan penjelasan pemilik dengan kondisi fisik barang di atas. Jika kepemilikan belum terbukti, jangan serahkan barang dan minta bukti tambahan.</span></div>
+  </div>
+  <form class="card form-card" id="returnForm" method="post" enctype="multipart/form-data" novalidate style="max-width:none">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <div class="field"><label for="owner_name">Nama pemilik</label><input class="input" id="owner_name" name="owner_name" required maxlength="100" value="{{ d.owner_name }}"></div>
+    <div class="field"><label>Jenis pengguna</label><div class="type-pills">{% for v, t in owner_types %}<label><input type="radio" name="owner_type" value="{{ v }}" {{ 'checked' if d.owner_type==v }}><span>{{ t }}</span></label>{% endfor %}</div></div>
+    <div class="field"><label for="owner_phone">Nomor telepon pemilik</label><input class="input" id="owner_phone" name="owner_phone" type="tel" required maxlength="20" value="{{ d.owner_phone }}" placeholder="08xxxxxxxxxx"></div>
+    <div class="field"><label for="notes">Catatan verifikasi kepemilikan</label><textarea class="textarea" id="notes" name="notes" required maxlength="500" style="min-height:100px" placeholder="Identitas yang diperiksa, ciri khusus / isi barang yang disebutkan pemilik, dll.">{{ d.notes }}</textarea><div class="counter"></div></div>
+    <div class="field"><label>Foto dokumentasi serah terima (wajib)</label>
+      <div class="dropzone"><input type="file" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
+        <i data-lucide="camera" class="i" style="width:2rem;height:2rem;color:var(--red-2)"></i><p data-label>Foto pemilik bersama barang yang diserahkan</p><span class="hint">JPG, JPEG, atau PNG · maksimal 2 MB</span><img class="preview" alt="Pratinjau foto"></div>
+      <span class="privacy"><i data-lucide="lock" class="i"></i>Foto hanya dapat dilihat oleh Satpam.</span></div>
+    <button class="btn btn-primary" type="button" id="reviewReturn"><i data-lucide="check-check" class="i"></i>Tinjau & konfirmasi pengembalian</button>
+  </form>
+</div>
+<div class="modal" id="confirmReturn" role="dialog" aria-modal="true" aria-labelledby="crTitle"><div class="modal-box">
+  <button class="modal-x" data-modal-close aria-label="Tutup"><i data-lucide="x" class="i"></i></button>
+  <h3 id="crTitle" style="margin-bottom:.5rem">Konfirmasi pengembalian</h3>
+  <p style="margin-bottom:1rem">Pastikan data berikut benar. Setelah disimpan, status barang menjadi <b style="color:var(--text)">Sudah Dikembalikan</b> dan tidak bisa dibatalkan.</p>
+  <div class="detail-list"><div><b>Barang</b><span>#{{ item.id }} · {{ item.item_name }}</span></div><div><b>Pemilik</b><span data-s="name"></span></div><div><b>Jenis</b><span data-s="type"></span></div><div><b>Telepon</b><span data-s="phone"></span></div><div><b>Verifikasi</b><span data-s="notes"></span></div></div>
+  <div style="display:flex;gap:.6rem;margin-top:1.2rem"><button class="btn btn-ghost" type="button" data-modal-close style="flex:1">Periksa lagi</button><button class="btn btn-primary" type="button" id="doReturn" style="flex:1">Ya, serahkan barang</button></div>
+</div></div>
+{% endblock %}

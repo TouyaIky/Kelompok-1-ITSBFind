@@ -1,0 +1,14 @@
+<form class="card fb-form fb-ajax" action="{{ url_for('feedback.send') }}" method="post" novalidate>
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="row-2">
+    <div class="field"><label for="fb-name">Nama</label><input class="input" id="fb-name" name="name" required minlength="2" maxlength="80" value="{{ g.user.name if g.user }}" {{ 'readonly' if g.user }}></div>
+    <div class="field"><label for="fb-email">Email</label><input class="input" id="fb-email" name="email" type="email" required value="{{ g.user.email if g.user }}" {{ 'readonly' if g.user }}></div>
+  </div>
+  <div class="row-2">
+    <div class="field"><label for="fb-cat">Kategori</label>
+      <select class="select" id="fb-cat" name="category" required><option value="" disabled selected>Pilih kategori</option>{% for c in feedback_categories %}<option>{{ c }}</option>{% endfor %}</select></div>
+    <div class="field"><label for="fb-sub">Subjek</label><input class="input" id="fb-sub" name="subject" required minlength="3" maxlength="120"></div>
+  </div>
+  <div class="field"><label for="fb-msg">Pesan</label><textarea class="textarea" id="fb-msg" name="message" required minlength="10" maxlength="1500" placeholder="Tuliskan kritik atau saranmu (10–1500 karakter)"></textarea><div class="counter"></div></div>
+  <button class="btn btn-primary btn-block" type="submit"><i data-lucide="send" class="i"></i>Kirim masukan</button>
+</form>

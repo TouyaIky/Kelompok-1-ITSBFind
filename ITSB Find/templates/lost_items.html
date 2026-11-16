@@ -1,0 +1,39 @@
+{% extends "app_base.html" if g.user else "public_base.html" %}
+{% block title %}Daftar Barang Hilang — ITSB FIND{% endblock %}
+{% block inner %}
+{% include 'partials/guest_banner.html' %}
+<div class="page-head"><div><h1>Daftar Barang Hilang</h1><p>Laporan kehilangan dari civitas ITSB. Menemukan salah satunya? Serahkan ke Satpam.</p></div>
+  <div class="actions"><a class="btn btn-sm" href="{{ url_for('user.found_items') }}"><i data-lucide="package-search" class="i"></i>Lihat barang temuan</a>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('user.report_lost') }}" {{ 'data-modal-open=loginModal' if not g.user }}><i data-lucide="search-x" class="i"></i>Laporkan kehilangan</a></div></div>
+<form class="card filters" method="get">
+  <div class="field"><label for="q">Cari</label><input class="input" id="q" name="q" value="{{ f.q }}" placeholder="Nama barang, deskripsi, lokasi…"></div>
+  <div class="field"><label for="category">Kategori</label><select class="select" id="category" name="category"><option value="">Semua</option>{% for c in categories %}<option {{ 'selected' if f.category==c }}>{{ c }}</option>{% endfor %}</select></div>
+  <div class="field"><label for="location">Lokasi</label><select class="select" id="location" name="location"><option value="">Semua</option>{% for l in locations %}<option {{ 'selected' if f.location==l }}>{{ l }}</option>{% endfor %}</select></div>
+  {% include 'partials/filters_dates.html' %}
+  <div class="field"><label for="status">Status</label><select class="select" id="status" name="status">
+    {% for v, t in [('','Semua Laporan'),('open','Belum Ditemukan'),('candidates','Memiliki Kandidat Barang Temuan'),('resolved','Selesai')] %}<option value="{{ v }}" {{ 'selected' if f.status==v }}>{{ t }}</option>{% endfor %}</select></div>
+  <div class="field"><label for="sort">Urutkan</label><select class="select" id="sort" name="sort"><option value="newest" {{ 'selected' if sort!='oldest' }}>Terbaru</option><option value="oldest" {{ 'selected' if sort=='oldest' }}>Terlama</option></select></div>
+  <button class="btn btn-primary" type="submit"><i data-lucide="search" class="i"></i>Cari</button>
+</form>
+{% set filtered = f.q or f.category or f.location or f.date_from or f.date_to or f.status %}
+{% if items %}
+<div class="items">
+  {% for it in items %}
+  {% set photo = url_for('static', filename='uploads/' ~ it.photo) if it.photo else '' %}
+  {% set d = {'name': it.item_name, 'category': it.category, 'location': it.location, 'description': it.description,
+     'date': it.date_lost|idate ~ ', ' ~ it.time_lost, 'status': it.status|status_label, 'cls': 'badge ' ~ (it.status|status_cls), 'photo': photo} %}
+  <button type="button" class="card item" data-target="lostModal" data-item='{{ d|tojson }}'>
+    <div class="ph">{% if photo %}<img src="{{ photo }}" alt="Foto {{ it.item_name }}" loading="lazy">{% else %}<div style="height:100%;display:grid;place-items:center;color:var(--dim)"><i data-lucide="image-off" class="i" style="width:2.2rem;height:2.2rem"></i></div>{% endif %}
+      <span class="badge {{ it.status|status_cls }}">{{ it.status|status_label }}</span></div>
+    <div class="body"><h3>{{ it.item_name }}</h3>
+      <div class="meta"><span class="chip"><i data-lucide="tag" class="i"></i>{{ it.category }}</span><span class="chip"><i data-lucide="map-pin" class="i"></i>{{ it.location }}</span><span class="chip"><i data-lucide="calendar" class="i"></i>{{ it.date_lost|idate }}</span></div>
+      {% if it.candidates %}<span class="badge b-mid">Ada {{ it.candidates }} kandidat barang temuan</span>{% endif %}</div>
+  </button>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty"><i data-lucide="search-x" class="i"></i><h3>{{ 'Tidak ada laporan yang cocok' if filtered else 'Belum ada laporan kehilangan' }}</h3>
+  <p>{{ 'Coba ubah kata kunci atau filter.' if filtered else 'Laporan kehilangan akan tampil di sini.' }}</p></div>
+{% endif %}
+{% include 'partials/lost_modal.html' %}
+{% endblock %}

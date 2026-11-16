@@ -1,0 +1,25 @@
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        {% include 'partials/logo.html' %}
+        <p style="margin:1rem 0 .4rem;color:var(--text);font-weight:600">Lost Something? Let's Find It.</p>
+        <p>Connecting Lost Belongings with Their Owners.</p>
+      </div>
+      <div><h5>Navigasi</h5><ul>
+        <li><a href="{{ url_for('main.landing') }}#home">Home</a></li>
+        <li><a href="{{ url_for('main.landing') }}#features">Features</a></li>
+        <li><a href="{{ url_for('main.landing') }}#how">How It Works</a></li>
+        <li><a href="{{ url_for('user.found_items') }}">Daftar Barang Temuan</a></li>
+        <li><a href="{{ url_for('user.lost_items') }}">Daftar Barang Hilang</a></li>
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+        <li><a href="{{ url_for('auth.register') }}">Register</a></li></ul></div>
+      <div><h5>Tentang</h5><ul>
+        <li><a href="{{ url_for('main.about') }}">About Us</a></li>
+        <li><a href="{{ url_for('feedback.page') }}">Kritik dan Saran</a></li></ul></div>
+      <div><h5>Informasi Proyek</h5>
+        <p><strong style="color:var(--text)">{{ team_project.name }}</strong><br>{{ team_project.type }}<br>{{ team_project.purpose }}<br>{{ team_project.institution }}</p></div>
+    </div>
+    <div class="foot-bottom"><span>© {{ now_year }} ITSB FIND — {{ team_project.institution }}.</span><span>Proyek tugas kelompok mahasiswa.</span></div>
+  </div>
+</footer>

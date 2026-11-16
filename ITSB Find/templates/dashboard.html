@@ -1,0 +1,31 @@
+{% extends "app_base.html" %}
+{% block title %}Dashboard — ITSB FIND{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Halo, {{ g.user.name.split()[0] }}</h1><p>Ringkasan aktivitas Lost and Found di kampus.</p></div>
+  <div class="actions"><a class="btn btn-primary btn-sm" href="{{ url_for('user.report_lost') }}"><i data-lucide="search-x" class="i"></i>Laporkan kehilangan</a>
+  <a class="btn btn-sm" href="{{ url_for('user.report_found') }}"><i data-lucide="package-plus" class="i"></i>Laporkan temuan</a></div></div>
+<div class="stat-cards">
+  <div class="card stat-card"><div class="top">Total barang temuan<span class="ic"><i data-lucide="package-check" class="i"></i></span></div><div class="num" data-count="{{ found.stored + found.returned }}">0</div></div>
+  <div class="card stat-card"><div class="top">Total barang hilang<span class="ic"><i data-lucide="search-x" class="i"></i></span></div><div class="num" data-count="{{ lost.total }}">0</div></div>
+  <div class="card stat-card"><div class="top">Sudah dikembalikan<span class="ic"><i data-lucide="badge-check" class="i"></i></span></div><div class="num" data-count="{{ found.returned }}">0</div></div>
+  <div class="card stat-card"><div class="top">Tersimpan di Satpam<span class="ic"><i data-lucide="shield" class="i"></i></span></div><div class="num" data-count="{{ found.stored }}">0</div></div>
+</div>
+<div class="grid-2">
+  <div class="card panel"><h3>Barang temuan per kategori</h3><div class="chart-box"><canvas id="catChart" data-chart='{{ chart|tojson }}'></canvas></div></div>
+  <div class="card panel"><h3>Aktivitas terbaru</h3>
+    {% if activity %}<ul class="feed">{% for a in activity %}
+      <li><span class="dot {{ 'f' if a.kind=='found' }}"><i data-lucide="{{ 'package-check' if a.kind=='found' else 'search-x' }}" class="i"></i></span>
+        <div><b>{{ a.item_name }}</b><small>{{ 'Barang temuan' if a.kind=='found' else 'Barang hilang' }} · {{ a.created_at|idt }}</small></div></li>{% endfor %}</ul>
+    {% else %}<p>Belum ada aktivitas.</p>{% endif %}</div>
+</div>
+<div class="grid-2" style="grid-template-columns:1fr 1fr">
+  <div class="card panel"><h3>Laporan terbaru saya <a href="{{ url_for('user.my_reports') }}">Lihat semua</a></h3>
+    {% if mine %}<ul class="feed">{% for m in mine %}<li><span class="dot {{ 'f' if m.kind=='found' }}"><i data-lucide="{{ 'package-plus' if m.kind=='found' else 'search-x' }}" class="i"></i></span>
+      <div style="flex:1"><b>{{ m.item_name }}</b><small>{{ m.created_at|idt }}</small></div><span class="badge {{ m.status|status_cls }}">{{ m.status|status_label }}</span></li>{% endfor %}</ul>
+    {% else %}<div class="empty" style="padding:1.5rem"><p>Kamu belum membuat laporan.</p></div>{% endif %}</div>
+  <div class="card panel"><h3>Baru tersimpan di Satpam <a href="{{ url_for('user.found_items') }}">Jelajahi</a></h3>
+    {% if latest %}<ul class="feed">{% for f in latest %}<li><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ f.photo) }}" alt=""><div><b>{{ f.item_name }}</b><small>{{ f.location }} · {{ f.date_found|idate }}</small></div></li>{% endfor %}</ul>
+    {% else %}<p>Belum ada barang temuan yang tersimpan.</p>{% endif %}</div>
+</div>
+{% endblock %}
+{% block js %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>{% endblock %}

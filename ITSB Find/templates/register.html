@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Register — ITSB FIND{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">{% endblock %}
+{% block body %}
+<div class="auth">
+  <aside class="auth-side"><div>{% include 'partials/logo.html' %}</div>
+    <div><h2>Satu akun untuk seluruh civitas ITSB.</h2><p>Laporkan barang temuan, cari barang yang hilang, dan bantu teman menemukan miliknya kembali.</p></div><div class="rings"></div></aside>
+  <main class="auth-main"><div class="auth-card">
+    <a class="back" href="{{ url_for('main.landing') }}"><i data-lucide="arrow-left" class="i"></i>Kembali ke beranda</a>
+    <h1>Buat akun</h1><p>Isi data berikut untuk mulai menggunakan ITSB FIND.</p>
+    <form method="post" data-once novalidate>
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <div class="field"><label>Jenis pengguna</label>
+        <div class="type-pills" role="radiogroup" aria-label="Jenis pengguna">{% for v, t in user_types %}
+          <label><input type="radio" name="user_type" value="{{ v }}" {{ 'checked' if form.user_type==v }} required><span>{{ t }}</span></label>{% endfor %}</div></div>
+      <div class="field"><label for="name">Nama lengkap</label><input class="input" id="name" name="name" required maxlength="80" value="{{ form.name }}" autocomplete="name"></div>
+      <div class="field" id="nimField"><label for="nim">NIM</label><input class="input" id="nim" name="nim" maxlength="20" value="{{ form.nim }}"><span class="hint">Hanya untuk Mahasiswa.</span></div>
+      <div class="row-2">
+        <div class="field"><label for="email">Email</label><input class="input" id="email" name="email" type="email" required value="{{ form.email }}" autocomplete="email"></div>
+        <div class="field"><label for="phone">Nomor telepon</label><input class="input" id="phone" name="phone" type="tel" inputmode="tel" required maxlength="20" value="{{ form.phone }}" placeholder="08xxxxxxxxxx" autocomplete="tel"></div>
+      </div>
+      <div class="field"><label for="password">Password</label><div class="input-wrap"><input class="input" id="password" name="password" type="password" required autocomplete="new-password"><button type="button" class="eye" aria-label="Tampilkan password"><i data-lucide="eye" class="i"></i></button></div><span class="hint">Minimal 8 karakter, kombinasi huruf dan angka.</span></div>
+      <div class="field"><label for="confirm">Konfirmasi password</label><div class="input-wrap"><input class="input" id="confirm" name="confirm" type="password" required autocomplete="new-password"><button type="button" class="eye" aria-label="Tampilkan password"><i data-lucide="eye" class="i"></i></button></div></div>
+      <button class="btn btn-primary btn-block" type="submit"><i data-lucide="user-plus" class="i"></i>Daftar</button>
+    </form>
+    <p class="auth-foot">Sudah punya akun? <a href="{{ url_for('auth.login') }}">Login</a></p>
+  </div></main>
+</div>
+{% endblock %}

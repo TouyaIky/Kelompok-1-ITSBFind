@@ -1,0 +1,13 @@
+{% extends "app_base.html" %}
+{% block title %}Pengembalian Barang — Satpam{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Pengembalian Barang</h1><p>Cari barang yang diminta pemilik, periksa identitas dan bukti kepemilikan secara langsung, lalu proses penyerahan.</p></div></div>
+<form class="card" method="get" style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.4rem">
+  <input class="input" style="flex:1;min-width:220px" name="q" value="{{ q }}" placeholder="Cari nama barang atau ID (mis. 12)" aria-label="Cari barang">
+  <button class="btn btn-primary" type="submit"><i data-lucide="search" class="i"></i>Cari</button>{% if q %}<a class="btn btn-ghost" href="{{ url_for('satpam.returns') }}">Reset</a>{% endif %}</form>
+{% if items %}<div class="table-wrap"><table><thead><tr><th>ID</th><th>Barang</th><th>Lokasi ditemukan</th><th>Diterima</th><th></th></tr></thead><tbody>
+{% for f in items %}<tr><td>#{{ f.id }}</td><td><div class="cell-item"><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ f.photo) }}" alt=""><div><b>{{ f.item_name }}</b><small>{{ f.category }}</small></div></div></td>
+  <td>{{ f.location }}</td><td>{{ f.received_at|idt }}</td>
+  <td><a class="btn btn-primary btn-sm" href="{{ url_for('satpam.return_item', fid=f.id) }}"><i data-lucide="hand-helping" class="i"></i>Proses pengembalian</a></td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty"><i data-lucide="package-open" class="i"></i><h3>{{ 'Barang tidak ditemukan' if q else 'Tidak ada barang yang disimpan' }}</h3><p>{{ 'Periksa kata kunci atau ID barang. Hanya barang berstatus "Belum Dikembalikan" yang ditampilkan.' if q else 'Barang yang sudah dikonfirmasi penerimaannya akan tampil di sini.' }}</p></div>{% endif %}
+{% endblock %}

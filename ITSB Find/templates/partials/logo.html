@@ -1,0 +1,6 @@
+{% set b = brand() %}
+<a href="{{ url_for('main.landing') }}" class="logo" aria-label="ITSB FIND — beranda">
+  {% if b.url %}<img class="logo-img" src="{{ b.url }}" alt="Logo ITSB FIND" style="height:{{ b.height }}px">
+  {% else %}<span class="logo-mark"><i data-lucide="search" class="i" style="stroke-width:2.6"></i></span>{% endif %}
+  {% if b.show_name or not b.url %}<span class="logo-text">ITSB <b>FIND</b></span>{% endif %}
+</a>

@@ -1,0 +1,113 @@
+{% extends "public_base.html" %}
+{% block content %}
+<!-- HERO -->
+<section class="hero" id="home">
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="container hero-grid">
+    <div>
+      <h1><span>LOST SOMETHING?</span><span class="l2">LET'S FIND IT.</span></h1>
+      <p class="sub">An easier way to reconnect lost belongings with their owners. Designed for the ITSB community.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ url_for('user.found_items') }}"><i data-lucide="package-search" class="i"></i>Explore Items</a>
+        <a class="btn" href="{{ url_for('user.report_found') }}" {{ 'data-modal-open=loginModal' if not g.user }}><i data-lucide="plus-circle" class="i"></i>Report an Item</a>
+        {% if not g.user %}<a class="btn btn-ghost" href="{{ url_for('main.guest') }}"><i data-lucide="eye" class="i"></i>Masuk sebagai Tamu</a>{% endif %}
+      </div>
+      <div class="hero-note"><span><i data-lucide="shield-check" class="i"></i>Verifikasi kepemilikan langsung oleh Satpam</span><span><i data-lucide="school" class="i"></i>Khusus civitas ITSB</span></div>
+    </div>
+    <div class="radar-wrap" aria-hidden="true">
+      <div class="radar"><div class="sweep"></div></div>
+      <div class="core"><i data-lucide="search" class="i" style="width:26px;height:26px;stroke-width:2.4"></i></div>
+      <div class="pin" style="left:24%;top:26%"><i><span data-lucide="wallet" class="i"></span></i>Dompet</div>
+      <div class="pin ok" style="left:78%;top:34%"><i><span data-lucide="key-round" class="i"></span></i>Kunci</div>
+      <div class="pin" style="left:68%;top:78%"><i><span data-lucide="headphones" class="i"></span></i>Earbuds</div>
+      <div class="pin ok" style="left:22%;top:72%"><i><span data-lucide="backpack" class="i"></span></i>Tas</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT ITSB FIND -->
+<section class="section alt" id="about">
+  <div class="container about-grid">
+    <div class="reveal">
+      <span class="kicker">Tentang ITSB FIND</span>
+      <h2 style="font-size:clamp(1.9rem,4vw,2.9rem);margin-bottom:1.2rem">Platform Lost and Found untuk kampus kita.</h2>
+      <p>ITSB FIND membantu mahasiswa dan seluruh civitas akademika Institut Teknologi Sains Bandung melaporkan, mencari, dan menemukan kembali barang yang hilang di lingkungan kampus.</p>
+      <p>Platform ini dibuat karena barang yang tertinggal sering berpindah tangan tanpa catatan, sehingga pemilik tidak tahu harus mencari ke mana. Dengan satu daftar yang terpusat dan petugas yang jelas, prosesnya menjadi lebih cepat dan transparan.</p>
+    </div>
+    <div class="problem-list">
+      <div class="card problem reveal" data-d="80"><span class="ic"><i data-lucide="help-circle" class="i"></i></span><div><h4>Masalah</h4><p>Informasi barang hilang tersebar di grup chat dan mudah tenggelam.</p></div></div>
+      <div class="card problem reveal" data-d="160"><span class="ic"><i data-lucide="layers" class="i"></i></span><div><h4>Solusi</h4><p>Satu daftar barang temuan yang tersimpan di Satpam, lengkap dengan foto dan lokasi.</p></div></div>
+      <div class="card problem reveal" data-d="240"><span class="ic"><i data-lucide="heart-handshake" class="i"></i></span><div><h4>Manfaat</h4><p>Pemilik lebih cepat menemukan barangnya, penemu tahu ke mana harus menyerahkan.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head center reveal"><span class="kicker">Features</span><h2>Semua yang dibutuhkan untuk menemukan kembali.</h2></div>
+    <div class="features-grid">
+      {% for ic, t, d in [
+        ('package-plus','Report Found Items','Laporkan barang yang kamu temukan beserta foto dan lokasinya.'),
+        ('search-x','Report Lost Items','Catat barang yang hilang, tersimpan otomatis tanpa menunggu persetujuan.'),
+        ('package-search','Browse Found & Lost Items','Lihat daftar barang temuan dan laporan barang hilang, bahkan tanpa login.'),
+        ('sliders-horizontal','Search & Filter','Cari berdasarkan nama, kategori, lokasi, status, dan tanggal.'),
+        ('sparkles','Item Matching','Dapatkan rekomendasi barang temuan yang mirip dengan laporanmu.'),
+        ('badge-check','Item Return Confirmation','Satpam menyerahkan barang setelah kepemilikan terbukti dan mendokumentasikannya.'),
+        ('message-square-text','Feedback & Suggestions','Kirim kritik dan saran, tanpa perlu login.'),
+        ('lock-keyhole','Secure Account Recovery','Reset password lewat tautan sekali pakai yang cepat kedaluwarsa.')] %}
+      <article class="card feature reveal" data-d="{{ loop.index0 % 4 * 70 }}"><div class="ic"><i data-lucide="{{ ic }}" class="i"></i></div><h3>{{ t }}</h3><p>{{ d }}</p></article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section alt" id="how">
+  <div class="container">
+    <div class="section-head center reveal"><span class="kicker">How It Works</span><h2>Enam langkah dari kehilangan sampai kembali.</h2></div>
+    <div class="timeline">
+      {% for ic, t, d in [
+        ('file-plus-2','Laporkan barang','Pengguna melaporkan barang hilang atau barang temuan.'),
+        ('save','Laporan tersimpan','Laporanmu tercatat di sistem ITSB FIND.'),
+        ('package-search','Cari di daftar','Pemilik mencari barangnya di daftar barang temuan.'),
+        ('map-pin','Datang ke Satpam','Jika barang ditemukan, pemilik datang ke Satpam.'),
+        ('id-card','Periksa bukti','Satpam memeriksa identitas dan bukti kepemilikan.'),
+        ('badge-check','Barang kembali','Barang diserahkan dan status diperbarui menjadi Dikembalikan.')] %}
+      <div class="step card reveal" data-n="{{ loop.index }}" data-d="{{ loop.index0 * 60 }}"><span class="ic"><i data-lucide="{{ ic }}" class="i"></i></span><div><h4>{{ t }}</h4><p>{{ d }}</p></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section" id="stats" style="padding:80px 0">
+  <div class="container">
+    <div class="stats">
+      <div class="card stat reveal"><div class="num" data-count="{{ stats.found }}">0</div><div class="lbl">Total barang temuan</div></div>
+      <div class="card stat reveal" data-d="70"><div class="num" data-count="{{ stats.lost }}">0</div><div class="lbl">Total barang hilang</div></div>
+      <div class="card stat reveal" data-d="140"><div class="num" data-count="{{ stats.returned }}">0</div><div class="lbl">Total barang dikembalikan</div></div>
+      <div class="card stat reveal" data-d="210"><div class="num" data-count="{{ stats.users }}">0</div><div class="lbl">Total pengguna</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section alt" id="team">
+  <div class="container">
+    <div class="section-head center reveal"><span class="kicker">Our Team</span><h2>THE MINDS BEHIND ITSB FIND</h2>
+      <p>Five minds, one mission — building a smarter way to reconnect people with their lost belongings.</p></div>
+    {% include 'partials/team.html' %}
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section class="section" id="feedback">
+  <div class="container fb-grid">
+    <div class="reveal"><span class="kicker">Kritik dan Saran</span><h2 style="font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:1rem">Punya masukan untuk kami?</h2>
+      <p>Kritik, saran, laporan bug, atau ide fitur baru — semuanya kami baca. Kamu tidak perlu login untuk mengirimnya.</p></div>
+    <div class="reveal" data-d="100">{% include 'partials/feedback_form.html' %}</div>
+  </div>
+</section>
+{% endblock %}
+{% block js %}<script src="{{ url_for('static', filename='js/forms.js') }}"></script>{% endblock %}

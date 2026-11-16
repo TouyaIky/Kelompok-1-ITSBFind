@@ -1,0 +1,19 @@
+<form class="card form-card" method="post" enctype="multipart/form-data" data-once novalidate>
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="field"><label for="item_name">Nama barang</label><input class="input" id="item_name" name="item_name" required maxlength="100" value="{{ d.item_name }}"></div>
+  <div class="row-2">
+    <div class="field"><label for="category">Kategori</label><select class="select" id="category" name="category" required><option value="" disabled {{ 'selected' if not d.category }}>Pilih kategori</option>{% for c in categories %}<option {{ 'selected' if d.category==c }}>{{ c }}</option>{% endfor %}</select></div>
+    <div class="field"><label for="location">{{ loc_label }}</label><input class="input" id="location" name="location" list="locs" required maxlength="100" value="{{ d.location }}"><datalist id="locs">{% for s in suggestions %}<option value="{{ s }}">{% endfor %}</datalist></div>
+  </div>
+  <div class="row-2">
+    <div class="field"><label for="date">{{ date_label }}</label><input class="input" id="date" name="date" type="date" max="{{ today }}" required value="{{ d.date }}"></div>
+    <div class="field"><label for="time">{{ time_label }}</label><input class="input" id="time" name="time" type="time" required value="{{ d.time }}"></div>
+  </div>
+  <div class="field"><label for="phone">Nomor telepon Anda</label><input class="input" id="phone" name="phone" type="tel" inputmode="tel" required maxlength="20" value="{{ d.phone }}" placeholder="08xxxxxxxxxx" autocomplete="tel"><span class="privacy"><i data-lucide="lock" class="i"></i>Hanya dapat dilihat oleh Satpam.</span></div>
+  <div class="field"><label for="description">Deskripsi / ciri-ciri</label><textarea class="textarea" id="description" name="description" required minlength="10" maxlength="1000" placeholder="Warna, merek, goresan, stiker, isi, atau ciri khusus lainnya">{{ d.description }}</textarea><div class="counter"></div></div>
+  <div class="field"><label>Foto barang {{ '(wajib)' if photo_required else '(opsional)' }}</label>
+    <div class="dropzone"><input type="file" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png" {{ 'required' if photo_required }}>
+      <i data-lucide="image-up" class="i" style="width:2rem;height:2rem;color:var(--red-2)"></i><p data-label>Seret foto ke sini atau klik untuk memilih</p><span class="hint">JPG, JPEG, atau PNG · maksimal 2 MB</span><img class="preview" alt="Pratinjau foto"></div></div>
+  {{ caller() if caller }}
+  <button class="btn btn-primary" type="submit"><i data-lucide="send" class="i"></i>{{ submit }}</button>
+</form>

@@ -1,0 +1,23 @@
+{% extends "app_base.html" %}
+{% block title %}Dashboard Satpam — ITSB FIND{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Dashboard Satpam</h1><p>Terima, simpan, dan serahkan barang kepada pemiliknya.</p></div>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('satpam.returns') }}"><i data-lucide="hand-helping" class="i"></i>Proses pengembalian</a></div>
+<div class="stat-cards five">
+  <div class="card stat-card"><div class="top">Total barang temuan<span class="ic"><i data-lucide="package-check" class="i"></i></span></div><div class="num" data-count="{{ found.received }}">0</div></div>
+  <div class="card stat-card"><div class="top">Total barang hilang<span class="ic"><i data-lucide="search-x" class="i"></i></span></div><div class="num" data-count="{{ lost.total }}">0</div></div>
+  <div class="card stat-card"><div class="top">Masih tersimpan<span class="ic"><i data-lucide="shield" class="i"></i></span></div><div class="num" data-count="{{ found.stored }}">0</div></div>
+  <div class="card stat-card"><div class="top">Sudah dikembalikan<span class="ic"><i data-lucide="badge-check" class="i"></i></span></div><div class="num" data-count="{{ found.returned }}">0</div></div>
+  <div class="card stat-card"><div class="top">Laporan 7 hari terakhir<span class="ic"><i data-lucide="clock" class="i"></i></span></div><div class="num" data-count="{{ recent }}">0</div></div>
+</div>
+<div class="card panel"><h3>Menunggu konfirmasi penerimaan <a href="{{ url_for('satpam.found', status='pending') }}">Lihat semua</a></h3>
+  {% if pending %}<div class="table-wrap"><table><thead><tr><th>Barang</th><th>Penemu</th><th>Telepon</th><th>Lokasi</th><th></th></tr></thead><tbody>
+  {% for f in pending %}<tr><td><div class="cell-item"><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ f.photo) }}" alt=""><div><b>{{ f.item_name }}</b><small>{{ f.category }}</small></div></div></td><td>{{ f.reporter }}</td>
+    <td><a href="tel:{{ f.reporter_phone }}">{{ f.reporter_phone or '-' }}</a></td><td>{{ f.location }}</td>
+    <td><form method="post" action="{{ url_for('satpam.confirm', fid=f.id) }}" data-confirm="Konfirmasi barang ini sudah diterima secara fisik?"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="btn btn-primary btn-sm" type="submit"><i data-lucide="check" class="i"></i>Konfirmasi penerimaan</button></form></td></tr>{% endfor %}</tbody></table></div>
+  {% else %}<p>Tidak ada barang yang menunggu konfirmasi.</p>{% endif %}</div>
+<div class="card panel" style="margin-top:1rem"><h3>Aktivitas terbaru</h3>
+  {% if activity %}<div class="table-wrap"><table><thead><tr><th>Aktivitas</th><th>Barang</th><th>Oleh</th><th>Status</th><th>Waktu</th></tr></thead><tbody>
+  {% for a in activity %}<tr><td>{{ a.kind }}</td><td><b>{{ a.item_name }}</b></td><td>{{ a.actor }}</td><td><span class="badge {{ a.status|status_cls }}">{{ a.status|status_label }}</span></td><td>{{ a.ts|idt }}</td></tr>{% endfor %}</tbody></table></div>
+  {% else %}<p>Belum ada aktivitas.</p>{% endif %}</div>
+{% endblock %}

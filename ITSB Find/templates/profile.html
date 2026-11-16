@@ -1,0 +1,24 @@
+{% extends "app_base.html" %}
+{% block title %}Profil — ITSB FIND{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Profil</h1><p>Kelola data akunmu.</p></div></div>
+<div class="grid-2" style="grid-template-columns:1fr 1fr">
+  <form class="card panel" method="post" data-once novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}"><input type="hidden" name="action" value="profile">
+    <h3>Data diri <span class="badge b-returned">{{ g.user.role|role_label }}</span></h3>
+    <div class="field"><label for="name">Nama lengkap</label><input class="input" id="name" name="name" required maxlength="80" value="{{ g.user.name }}"></div>
+    <div class="field"><label>Email</label><input class="input" value="{{ g.user.email }}" disabled></div>
+    {% if g.user.nim and g.user.role=='student' %}<div class="field"><label>NIM</label><input class="input" value="{{ g.user.nim }}" disabled></div>{% endif %}
+    <div class="field"><label for="phone">Nomor telepon</label><input class="input" id="phone" name="phone" type="tel" required maxlength="20" value="{{ g.user.phone }}"><span class="privacy"><i data-lucide="lock" class="i"></i>Nomor telepon hanya dapat dilihat oleh Satpam.</span></div>
+    <button class="btn btn-primary" type="submit"><i data-lucide="save" class="i"></i>Simpan perubahan</button>
+  </form>
+  <form class="card panel" method="post" data-once novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}"><input type="hidden" name="action" value="password">
+    <h3>Ganti password</h3>
+    <div class="field"><label for="current">Password saat ini</label><div class="input-wrap"><input class="input" id="current" name="current" type="password" required autocomplete="current-password"><button type="button" class="eye" aria-label="Tampilkan password"><i data-lucide="eye" class="i"></i></button></div></div>
+    <div class="field"><label for="password">Password baru</label><div class="input-wrap"><input class="input" id="password" name="password" type="password" required autocomplete="new-password"><button type="button" class="eye" aria-label="Tampilkan password"><i data-lucide="eye" class="i"></i></button></div><span class="hint">Minimal 8 karakter, kombinasi huruf dan angka.</span></div>
+    <div class="field"><label for="confirm">Konfirmasi password baru</label><div class="input-wrap"><input class="input" id="confirm" name="confirm" type="password" required autocomplete="new-password"><button type="button" class="eye" aria-label="Tampilkan password"><i data-lucide="eye" class="i"></i></button></div></div>
+    <button class="btn btn-primary" type="submit"><i data-lucide="key-round" class="i"></i>Ganti password</button>
+  </form>
+</div>
+{% endblock %}

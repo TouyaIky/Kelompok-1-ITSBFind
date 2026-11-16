@@ -1,0 +1,5 @@
+{% if not g.user %}
+<div class="guest-banner"><span class="pill"><i data-lucide="eye" class="i"></i>Mode Tamu</span>
+  <span>Kamu dapat melihat dan mencari barang. Untuk melaporkan barang, silakan login atau daftar.</span>
+  <span class="gb-actions"><a class="btn btn-sm" href="{{ url_for('auth.login') }}">Login</a><a class="btn btn-primary btn-sm" href="{{ url_for('auth.register') }}">Register</a></span></div>
+{% endif %}
