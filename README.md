@@ -189,13 +189,13 @@ Proyek ITSB FIND dikembangkan oleh:
 **Kelompok 1 — Program Studi Sains Data**  
 **Institut Teknologi Sains Bandung (ITSB)**
 
-| No. | Nama Anggota |
-|---|---|
-| 1 | Yustian |
-| 2 | Arya |
-| 3 | Ahmad Rizki Mubarak |
-| 4 | Paskalis |
-| 5 | Aidil |
+| No. | Nama Anggota | NIM |
+|---|---|---|
+| 1 | Ahmad Rizki Mubarak | 52250036 | 
+| 2 | Arya Fharezi | 52250036 |
+| 3 | M. Fitrah Aidil Harahap | 52250031 |
+| 4 | M. Yustian Putra Muhadi | 52250015 |
+| 5 | Paskalis Farelnata Zamasi | 52250043 |
 
 ## Penutup
 
